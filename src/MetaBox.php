@@ -34,9 +34,21 @@ class MetaBox
     public static function render($post, $args): void
 
     {
+
+        // Add nonce field for security
+        wp_nonce_field('nw_media_fields_save', 'nw_media_fields_nonce');
+
+        // Get the field object from the args
         $field = $args['args']['field'];
 
+        // Get the name and value for the input field
         $name = 'nw_media_' . $field->key();
+
+        // Get the current value from post meta
+        $value = get_post_meta( $post->ID, 'nw_media_' . $field->key(), true );
+
+        // If the value is an array, convert it to a comma-separated string
+        $value = is_array($value) ? $value : explode(',', $value);
 
         ?>
 
@@ -44,11 +56,21 @@ class MetaBox
 
             <div class="nw-media-preview"></div>
 
+            <?php foreach ($value as $id): ?>
+
+                <?php if ($id): ?>
+
+                    <?php echo wp_get_attachment_image($id, 'thumbnail'); ?>
+
+                <?php endif; ?>
+
+            <?php endforeach; ?>
+
             <input 
                 type="hidden"
                 class="nw-media-input"
                 name="<?php echo esc_attr($name); ?>"
-                value=""
+                value="<?php echo esc_attr(implode(',', $value)); ?>"
             >
 
             <button 

@@ -62,7 +62,7 @@ class NWMediaField {
 
             });
 
-            this.input.value = ids.join(',');
+            this.input.value = JSON.stringify(ids);
 
         });
 

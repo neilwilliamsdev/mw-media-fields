@@ -8,21 +8,22 @@ class Plugin
     {
         Assets::init();
         MetaBox::init();
-        
+        MetaBoxSave::init();
+
         self::register([
             'key'        => 'gallery',
             'label'      => 'Gallery',
             'post_types' => ['page'],
+            'multiple'   => true,
         ]);
 
         self::register([
             'key'        => 'hero',
             'label'      => 'Hero Image',
             'post_types' => ['page'],
-            'multiple'   => false,
+            'multiple'   => true,
         ]);
 
-        error_log(print_r(Registry::all(), true));
     }
 
     public static function register(array $args): void
