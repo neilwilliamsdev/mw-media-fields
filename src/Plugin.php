@@ -7,7 +7,8 @@ class Plugin
     public static function init(): void
     {
         Assets::init();
-
+        MetaBox::init();
+        
         self::register([
             'key'        => 'gallery',
             'label'      => 'Gallery',

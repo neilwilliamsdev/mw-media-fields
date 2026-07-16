@@ -15,8 +15,8 @@ class Assets
 
         wp_enqueue_script(
             'nw-media-fields',
-            plugin_dir_url(dirname(__FILE__)) . 'assets/admin.js',
-            ['jquery'],
+            plugin_dir_url(dirname(__FILE__)) . 'assets/media-field.js',
+            [],
             '0.1.0',
             true
         );
