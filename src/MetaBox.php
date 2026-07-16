@@ -56,19 +56,7 @@ class MetaBox
 
         <div class="nw-media-field">
 
-            <div class="nw-media-preview">
-
-                <?php foreach ($value as $id): ?>
-
-                    <?php if ($id): ?>
-
-                        <?php echo wp_get_attachment_image($id, 'thumbnail'); ?>
-
-                    <?php endif; ?>
-
-                <?php endforeach; ?>
-                
-            </div>
+            <div class="nw-media-preview"></div>
 
             <input 
                 type="hidden"

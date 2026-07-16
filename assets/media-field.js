@@ -13,6 +13,8 @@ class NWMediaField {
 
         this.bindEvents();
 
+        this.loadExistingPreview();
+
     }
 
 
@@ -91,6 +93,7 @@ class NWMediaField {
                 ids.push(attachment.id);
 
                 this.renderPreview(
+                    attachment.id,
                     attachment.attributes.url
                 );
 
@@ -106,15 +109,84 @@ class NWMediaField {
 
     }
 
+    loadExistingPreview() {
 
-    renderPreview(url) {
+        const ids = this.input.value
+            ? JSON.parse(this.input.value)
+            : [];
+
+
+        ids.forEach((id) => {
+
+            const attachment = wp.media.attachment(id);
+
+            attachment.fetch().then(() => {
+
+                this.renderPreview(
+                    id,
+                    attachment.attributes.url
+                );
+
+            });
+
+        });
+
+    }
+
+    renderPreview(id, url) {
+
+        const wrapper = document.createElement('div');
+
+        wrapper.classList.add('nw-media-preview-item');
+
+        wrapper.dataset.id = id;
+
 
         const image = document.createElement('img');
 
         image.src = url;
         image.width = 100;
 
-        this.preview.appendChild(image);
+
+        const remove = document.createElement('button');
+
+        remove.type = 'button';
+        remove.innerHTML = '&times;';
+        remove.classList.add('nw-media-remove');
+
+
+        remove.addEventListener('click', () => {
+
+            wrapper.remove();
+
+            this.removeImage(id);
+
+        });
+
+
+        wrapper.appendChild(image);
+        wrapper.appendChild(remove);
+
+
+        this.preview.appendChild(wrapper);
+
+    }
+
+    removeImage(id) {
+
+        const ids = this.input.value
+            ? JSON.parse(this.input.value)
+            : [];
+
+
+        const updatedIds = ids.filter((imageId) => {
+
+            return imageId !== id;
+
+        });
+
+
+        this.input.value = JSON.stringify(updatedIds);
 
     }
 
