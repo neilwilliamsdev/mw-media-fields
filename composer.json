@@ -1,0 +1,15 @@
+{
+    "name": "neilwilliams/nw-media-fields",
+    "autoload": {
+        "psr-4": {
+            "NW\\MediaFields\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Neil Williams",
+            "email": "neil@tailormade.uk"
+        }
+    ],
+    "require": {}
+}
