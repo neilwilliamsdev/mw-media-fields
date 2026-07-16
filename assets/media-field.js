@@ -1,6 +1,7 @@
 class NWMediaField {
 
     constructor(element) {
+
         this.wrapper = element;
         this.button = element.querySelector('.nw-media-select');
         this.input = element.querySelector('.nw-media-input');
@@ -8,19 +9,21 @@ class NWMediaField {
 
         this.frame = null;
 
-        // Bail if no button is found
         if (!this.button) return;
 
         this.bindEvents();
+
     }
 
 
     bindEvents() {
 
         this.button.addEventListener('click', (event) => {
+
             event.preventDefault();
 
             this.openMediaLibrary();
+
         });
 
     }
@@ -30,15 +33,44 @@ class NWMediaField {
 
         const multiple = this.button.dataset.multiple === 'true';
 
+        const currentIds = this.input.value
+            ? JSON.parse(this.input.value)
+            : [];
+
+
         this.frame = wp.media({
+
             title: 'Select Media',
-            multiple,
+
+            // Allow multiple selection if the button has the data-multiple attribute set to true
+            multiple: multiple ? 'add' : false,
+
             library: {
                 type: 'image'
             },
+
             button: {
                 text: 'Use Media'
             }
+
+        });
+
+
+        this.frame.on('open', () => {
+
+            const selection = this.frame
+                .state()
+                .get('selection');
+
+
+            currentIds.forEach((id) => {
+
+                const attachment = wp.media.attachment(id);
+
+                selection.add(attachment);
+
+            });
+
         });
 
 
@@ -48,9 +80,11 @@ class NWMediaField {
                 .state()
                 .get('selection');
 
+
             const ids = [];
 
             this.preview.innerHTML = '';
+
 
             selection.each((attachment) => {
 
@@ -61,6 +95,7 @@ class NWMediaField {
                 );
 
             });
+
 
             this.input.value = JSON.stringify(ids);
 
@@ -91,7 +126,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document
         .querySelectorAll('.nw-media-field')
         .forEach((field) => {
+
             new NWMediaField(field);
+
         });
 
 });

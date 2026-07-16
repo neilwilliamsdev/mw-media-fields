@@ -47,30 +47,34 @@ class MetaBox
         // Get the current value from post meta
         $value = get_post_meta( $post->ID, 'nw_media_' . $field->key(), true );
 
-        // If the value is an array, convert it to a comma-separated string
-        $value = is_array($value) ? $value : explode(',', $value);
+        // If the value is not an array, initialize it as an empty array
+        if (!is_array($value)) {
+            $value = [];
+        }
 
         ?>
 
         <div class="nw-media-field">
 
-            <div class="nw-media-preview"></div>
+            <div class="nw-media-preview">
 
-            <?php foreach ($value as $id): ?>
+                <?php foreach ($value as $id): ?>
 
-                <?php if ($id): ?>
+                    <?php if ($id): ?>
 
-                    <?php echo wp_get_attachment_image($id, 'thumbnail'); ?>
+                        <?php echo wp_get_attachment_image($id, 'thumbnail'); ?>
 
-                <?php endif; ?>
+                    <?php endif; ?>
 
-            <?php endforeach; ?>
+                <?php endforeach; ?>
+                
+            </div>
 
             <input 
                 type="hidden"
                 class="nw-media-input"
                 name="<?php echo esc_attr($name); ?>"
-                value="<?php echo esc_attr(implode(',', $value)); ?>"
+                value="<?php echo esc_attr(json_encode($value)); ?>"
             >
 
             <button 
